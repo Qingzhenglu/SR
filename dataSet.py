@@ -1,10 +1,17 @@
+import torch
+from matplotlib import pyplot as plt
 from torchaudio.datasets import SPEECHCOMMANDS
 import os
+
+labels = ['backward', 'bed', 'bird', 'cat', 'dog', 'down', 'eight', 'five', 'follow', 'forward',
+          'four', 'go', 'happy', 'house', 'learn', 'left', 'marvin', 'nine', 'no', 'off',
+          'on', 'one', 'right', 'seven', 'sheila', 'six', 'stop', 'three', 'tree', 'two',
+          'up', 'visual', 'wow', 'yes', 'zero']
 
 
 class SubsetSC(SPEECHCOMMANDS):
     def __init__(self, subset: str = None):
-        super().__init__("./", download=False)
+        super().__init__("./", download=True)
 
         def load_list(filename):
             filepath = os.path.join(self._path, filename)
@@ -22,9 +29,23 @@ class SubsetSC(SPEECHCOMMANDS):
 
 
 # Create training and testing split of the data. We do not use validation in this tutorial.
-validation_set = SubsetSC("validation")
-test_set = SubsetSC("testing")
 train_set = SubsetSC("training")
+test_set = SubsetSC("testing")
+# validation_set = SubsetSC("validation")
 
-waveform, sample_rate, label, speaker_id, utterance_number = train_set[0]
-print("Shape of waveform: {}".format(waveform.size()))
+# waveform, sample_rate, label, speaker_id, utterance_number = train_set[0]
+
+
+def label_to_index(word):
+    return labels.index(word)
+
+
+def index_to_label(index):
+    return labels[index]
+
+
+# word_test = "backward"
+# # index_test = 15
+# wt_toIndex = label_to_index(word_test)
+# it_toWord = index_to_label(wt_toIndex)
+# print(word_test, "->", wt_toIndex, "->", it_toWord)
